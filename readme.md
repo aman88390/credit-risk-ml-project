@@ -1,58 +1,177 @@
-# Credit Risk Prediction (Machine Learning Project)
+# Credit Risk Prediction using Machine Learning
 
 ## 📌 Problem Statement
 
-The objective of this project is to predict whether a customer is likely to default on a loan based on their financial and demographic details.
+The objective of this project is to predict whether a customer is **risky (bad)** or **safe (good)** for granting a loan based on their financial and demographic information.
+
+This is a **binary classification problem** where:
+
+* **0 → Bad (risky customer)**
+* **1 → Good (safe customer)**
 
 ---
 
-## 📊 Dataset
+## 🎯 Project Objective
 
-* German Credit Dataset
-* Contains customer information such as:
-
-  * Age
-  * Sex
-  * Job
-  * Housing
-  * Saving accounts
-  * Checking account
-  * Credit amount
-  * Duration
-  * Purpose
-* Target variable:
-
-  * **Risk**
-
-    * good → 0 (no default)
-    * bad → 1 (default)
+* Build a machine learning model to identify risky customers
+* Improve detection of bad loans using appropriate techniques
+* Develop a **clean, modular pipeline** for real-world usability
 
 ---
 
-## 🚀 Current Progress
+## 📊 Dataset Overview
 
-### ✔ Data Loading
+The dataset contains customer-related information such as:
 
-* Loaded dataset using pandas
-* Verified data using `df.head()`
+* Credit amount
+* Duration
+* Age
+* Job
+* Housing
+* Saving accounts
+* Checking account
+* Purpose
 
-### ✔ Data Understanding
-
-* Checked structure using `df.info()`
-* Analyzed numerical features using `df.describe()`
-* Analyzed categorical features using `df.describe(include="object")`
+The dataset is **imbalanced**, with more good customers than bad ones.
 
 ---
 
-## 🔍 Initial Observations
+## ⚙️ Approach
 
-* Dataset contains both numerical and categorical features
-* Target variable is categorical (good/bad)
-* Missing values present in:
+### 1. Data Cleaning
+
+* Handled missing values in:
 
   * Saving accounts
   * Checking account
-* Credit amount and loan duration vary significantly across customers
+* Missing values treated as **"Unknown"** category
+
+---
+
+### 2. Exploratory Data Analysis (EDA)
+
+Key insights:
+
+* Dataset is imbalanced (~70% good, ~30% bad)
+* Higher credit amount → higher risk
+* Longer duration → higher risk
+* Low savings/checking balance → higher risk
+
+---
+
+### 3. Feature Engineering
+
+Created meaningful features:
+
+* **Credit_per_month** → captures repayment burden
+* **Saving_group** → low / medium / high
+* **Checking_group** → low / medium / high
+
+---
+
+### 4. Encoding
+
+* Applied **One-Hot Encoding using `OneHotEncoder`**
+* Used:
+
+  * `drop='first'` → avoid redundancy
+  * `handle_unknown='ignore'` → handle unseen categories
+
+---
+
+### 5. Model Training
+
+* Used **Logistic Regression** as baseline model
+* Chosen for:
+
+  * Simplicity
+  * Interpretability
+  * Stable performance
+
+---
+
+### 6. Handling Class Imbalance
+
+* Applied **SMOTE (Synthetic Minority Oversampling Technique)**
+* Improved model performance on minority class (bad customers)
+
+---
+
+## 📈 Results
+
+| Metric             | Before SMOTE | After SMOTE    |
+| ------------------ | ------------ | -------------- |
+| Recall (Bad Class) | Lower        | Improved       |
+| Accuracy           | Higher       | Slightly lower |
+
+### 🔑 Key Insight
+
+In credit risk problems:
+
+> **Recall is more important than accuracy**
+> Because missing a bad customer can lead to financial loss.
+
+---
+
+## 🧠 Final Outcome
+
+* Model is better at identifying risky customers
+* Balanced performance across classes
+* Suitable for real-world credit risk assessment
+
+---
+
+## 📁 Project Structure
+
+```
+CREDIT_RISK_PROJECT/
+│
+├── data/
+│   └── german_credit_data.csv
+│
+├── notebooks/
+│   ├── Credit_Risk_Final.ipynb
+│   └── eda_experiment.ipynb
+│
+├── src/
+│   ├── data_cleaning.py
+│   ├── evaluate.py
+│   ├── feature_engineering.py
+│   ├── preprocessing.py
+│   ├── train.py
+│   └── models/
+│       └── credit_risk_model.pkl
+│
+├── venv/
+├── .gitignore
+├── main.py
+├── readme.md
+└── requirements.txt
+```
+
+---
+
+## 🚀 How to Run the Project
+
+### 1. Clone the repository
+
+```
+git clone <your-repo-link>
+cd credit-risk-project
+```
+
+### 2. Install dependencies
+
+```
+
+pip install -r requirements.txt
+```
+
+### 3. Run the pipeline
+
+```
+python main.py
+```
 
 ---
 
@@ -61,31 +180,37 @@ The objective of this project is to predict whether a customer is likely to defa
 * Python
 * Pandas
 * NumPy
-* Matplotlib
-* Seaborn
-* Scikit-learn (planned)
+* Scikit-learn
+* Imbalanced-learn (SMOTE)
+* Matplotlib / Seaborn
 
 ---
 
-## 📂 Project Structure
+## 🔍 Key Learnings
 
-
-credit_risk_project/
-│
-├── data/
-│   └── german_credit_data.csv
-│
-├── notebooks/
-│   └── eda.ipynb
-│
-├── README.md
+* Importance of handling class imbalance
+* Feature engineering improves model performance
+* Proper pipeline structure is critical for real-world ML
+* Trade-off between accuracy and recall
 
 ---
 
-## 📈 Next Steps
+## 🔮 Future Improvements
 
-* Data Cleaning
-* Feature Engineering
-* Exploratory Data Analysis (visual)
-* Model Training and Evaluation
-* Deployment (Flask API)
+* Use advanced models (XGBoost, LightGBM)
+* Hyperparameter tuning
+* Cross-validation
+* Deploy as API (Flask/FastAPI)
+* Build UI using Streamlit
+
+---
+
+## 👤 Author
+
+Aman Yadav
+
+---
+
+## ⭐ Final Note
+
+This project demonstrates a complete **end-to-end machine learning pipeline**, from data analysis to model deployment-ready structure.
